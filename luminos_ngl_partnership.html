@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LUMINOS × National Geographic Learning</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg-deep:#08090A;--bg:#0D0E10;--bg-card:#141618;--bg-card-hover:#1A1C1F;
+  --border:#222528;--border-light:#2A2D31;
+  --text-primary:#E8E6E1;--text-secondary:#A09B93;--text-tertiary:#6B665F;
+  --accent-warm:#C4835A;--accent-gold:#C9A84C;--accent-rust:#A85D3A;
+  --accent-glow:rgba(196,131,90,0.12);
+  --navy:#2A3A6B;--navy-light:#3A4D8B;
+}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+body{background:var(--bg-deep);color:var(--text-primary);font-family:'Manrope',-apple-system,sans-serif;font-weight:400;line-height:1.65;overflow-x:hidden;font-size:15px}
+
+#progress{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--accent-rust),var(--accent-gold));z-index:9999;transition:width 80ms linear}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:9998;display:flex;justify-content:space-between;align-items:center;padding:1.25rem 2.5rem;transition:all .4s}
+nav.scrolled{background:rgba(8,9,10,.92);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:1px solid var(--border)}
+nav .logo{font-family:'JetBrains Mono',monospace;font-size:.68rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--text-tertiary)}
+nav a.cta{font-family:'JetBrains Mono',monospace;font-size:.62rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;color:var(--accent-warm);padding:.55rem 1.4rem;border:1px solid rgba(196,131,90,.35);border-radius:3px;transition:all .3s}
+nav a.cta:hover{background:var(--accent-warm);color:var(--bg-deep);border-color:var(--accent-warm)}
+
+section{position:relative;padding:8rem 2.5rem}
+.container{max-width:1060px;margin:0 auto}
+
+h1.hero-title{font-family:'Cormorant Garamond',serif;font-weight:700;font-size:clamp(3rem,7vw,5.8rem);line-height:1.0;letter-spacing:-.03em;color:var(--text-primary)}
+h1.hero-title .luminos-brand{font-family:'Outfit',sans-serif;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+h2.section-title{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(2rem,4.5vw,3.2rem);line-height:1.12;letter-spacing:-.02em;color:var(--text-primary)}
+h3.sub-title{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:1.6rem;color:var(--text-primary);margin-top:3rem}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:.62rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--accent-warm);margin-bottom:1.2rem}
+.lead{font-size:1.1rem;line-height:1.75;color:var(--text-secondary);max-width:620px;font-weight:300}
+.accent{color:var(--accent-warm)}
+.source-line{font-family:'JetBrains Mono',monospace;font-size:.58rem;color:var(--text-tertiary);margin-top:2.5rem;line-height:1.6;border-top:1px solid var(--border);padding-top:1rem}
+
+.r{opacity:0;transform:translateY(32px);transition:opacity .7s cubic-bezier(.25,1,.5,1),transform .7s cubic-bezier(.25,1,.5,1)}
+.r.v{opacity:1;transform:translateY(0)}
+.r.d1{transition-delay:.08s}.r.d2{transition-delay:.16s}.r.d3{transition-delay:.24s}
+.r.d4{transition-delay:.32s}.r.d5{transition-delay:.4s}.r.d6{transition-delay:.48s}.r.d7{transition-delay:.56s}.r.d8{transition-delay:.64s}
+
+#hero{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;position:relative;overflow:hidden}
+#hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 800px 600px at 50% 35%,rgba(196,131,90,.05) 0%,transparent 100%),radial-gradient(ellipse 600px 400px at 30% 65%,rgba(201,168,76,.03) 0%,transparent 100%);pointer-events:none}
+.hero-sub{font-size:1.15rem;color:var(--text-secondary);max-width:460px;margin:1.8rem auto 2.5rem;font-weight:300}
+.hero-rule{width:60px;height:1.5px;background:linear-gradient(90deg,var(--accent-rust),var(--accent-gold));margin:0 auto}
+.hero-meta{font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--text-tertiary);letter-spacing:.14em;text-transform:uppercase;margin-top:3rem}
+.scroll-cue{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.6rem;animation:float 2.5s ease-in-out infinite}
+.scroll-cue span{font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:.18em;text-transform:uppercase;color:var(--text-tertiary)}
+.scroll-cue .line{width:1px;height:36px;background:linear-gradient(to bottom,var(--text-tertiary) 0%,transparent 100%)}
+@keyframes float{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(6px)}}
+
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);margin:3rem 0}
+.stat{background:var(--bg-card);padding:2.2rem 2rem;transition:background .3s}
+.stat:hover{background:var(--bg-card-hover)}
+.stat-num{font-family:'JetBrains Mono',monospace;font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:600;color:var(--text-primary);margin-bottom:.4rem}
+.stat-label{font-size:.9rem;color:var(--text-secondary);margin-bottom:.3rem}
+.stat-sub{font-family:'JetBrains Mono',monospace;font-size:.58rem;color:var(--text-tertiary)}
+
+.insight-box{background:var(--bg-card);border:1px solid var(--border);border-left:3px solid var(--accent-warm);padding:2rem 2.2rem;margin-top:2rem}
+.insight-box p{font-size:.95rem;color:var(--text-secondary);line-height:1.7}
+.insight-box strong{color:var(--text-primary);font-weight:600}
+
+.split{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);margin:3rem 0}
+.split-col{background:var(--bg-card);padding:2.5rem}
+.split-label{font-family:'JetBrains Mono',monospace;font-size:.6rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;margin-bottom:1.5rem}
+.split-col:first-child .split-label{color:var(--accent-gold)}
+.split-col:last-child .split-label{color:var(--accent-rust)}
+.split-item{margin-bottom:.9rem;font-size:.92rem;color:var(--text-secondary);line-height:1.55}
+.split-item strong{color:var(--text-primary);font-weight:600}
+
+.pullquote{margin:3.5rem 0;padding:2rem 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);text-align:center}
+.pullquote p{font-family:'Cormorant Garamond',serif;font-size:clamp(1.15rem,2.5vw,1.6rem);font-style:italic;font-weight:500;color:var(--accent-warm);max-width:700px;margin:0 auto;line-height:1.5}
+
+.research{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);margin:3rem 0}
+.research-card{background:var(--bg-card);padding:2.2rem;border-bottom:2px solid transparent;transition:border-color .3s,background .3s}
+.research-card:hover{border-bottom-color:var(--accent-warm);background:var(--bg-card-hover)}
+.research-card.full{grid-column:1/-1}
+.research-card h4{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:600;color:var(--text-primary);margin-bottom:.7rem;line-height:1.3}
+.research-card p{font-size:.9rem;color:var(--text-secondary);line-height:1.65}
+.cite{font-family:'JetBrains Mono',monospace;font-size:.55rem;color:var(--text-tertiary);margin-top:.9rem}
+
+.progression{display:flex;gap:3px;margin:3rem 0 1rem}
+.prog-step{flex:1;padding:1.3rem .6rem;text-align:center;font-family:'JetBrains Mono',monospace;font-size:.58rem;font-weight:500;letter-spacing:.04em;text-transform:uppercase;line-height:1.4}
+.prog-step.pre{background:var(--bg-card);color:var(--text-tertiary)}
+.prog-step.gap{background:transparent;border:1.5px dashed var(--accent-warm);color:var(--accent-warm)}
+.prog-step.ngl{background:var(--navy);color:rgba(255,255,255,.85)}
+.prog-step.ngl-dark{background:var(--navy-light);color:rgba(255,255,255,.85)}
+.gap-badge{text-align:center;margin:.8rem 0 2.5rem;font-family:'JetBrains Mono',monospace;font-size:.6rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-warm)}
+
+.evidence-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border)}
+.evidence-card{background:var(--bg-card);padding:2.2rem}
+.evidence-card h4{font-family:'JetBrains Mono',monospace;font-size:.6rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--accent-warm);margin-bottom:1rem}
+.evidence-card p{font-size:.9rem;color:var(--text-secondary);line-height:1.65}
+.evidence-card .em{color:var(--text-primary);font-weight:500}
+
+.value-stack{display:flex;flex-direction:column;gap:1px;background:var(--border);margin:3rem 0}
+.value-row{background:var(--bg-card);padding:2.5rem;display:grid;grid-template-columns:56px 1fr;gap:1.8rem;transition:background .3s;align-items:start}
+.value-row:hover{background:var(--bg-card-hover)}
+.value-icon{width:56px;height:56px;background:var(--bg-deep);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:1.3rem;border-radius:8px;flex-shrink:0}
+.value-row h4{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:600;color:var(--text-primary);margin-bottom:.5rem}
+.value-row p{font-size:.9rem;color:var(--text-secondary);line-height:1.65}
+.value-tag{display:inline-block;margin-top:.9rem;padding:.4rem .9rem;background:var(--accent-glow);border:1px solid rgba(196,131,90,.2);border-radius:3px;font-family:'JetBrains Mono',monospace;font-size:.58rem;font-weight:500;color:var(--accent-warm);letter-spacing:.04em}
+
+.mutual{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);margin:3rem 0}
+.mutual-col{background:var(--bg-card);padding:2.5rem}
+.mutual-item{padding:.7rem 0 .7rem 1rem;margin-bottom:.3rem;border-left:2px solid var(--border-light);font-size:.88rem;color:var(--text-secondary);line-height:1.55;transition:border-color .3s}
+.mutual-item:hover{border-color:var(--accent-warm)}
+
+.specs-layout{display:grid;grid-template-columns:3fr 2fr;gap:1px;background:var(--border);margin:3rem 0}
+.spec-main{background:var(--bg-card);padding:2.5rem}
+.spec-side{display:flex;flex-direction:column;gap:1px;background:var(--border)}
+.spec-card{background:var(--bg-card);padding:2rem;flex:1}
+.spec-card.warm{background:linear-gradient(160deg,rgba(168,93,58,.08) 0%,var(--bg-card) 100%)}
+.spec-card h4{font-family:'JetBrains Mono',monospace;font-size:.6rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--accent-warm);margin-bottom:1rem}
+.spec-item{margin-bottom:.65rem;font-size:.9rem;color:var(--text-secondary);line-height:1.5}
+.spec-item strong{color:var(--text-primary);font-weight:600}
+
+/* ─── WALKTHROUGH ─── */
+.walkthrough{display:flex;gap:0;margin:3rem 0;position:relative;overflow:hidden}
+.walk-step{flex:1;padding:2rem 1.5rem;background:var(--bg-card);border-right:1px solid var(--border);position:relative;transition:background .3s}
+.walk-step:last-child{border-right:none}
+.walk-step:hover{background:var(--bg-card-hover)}
+.walk-num{font-family:'JetBrains Mono',monospace;font-size:2.5rem;font-weight:600;color:rgba(196,131,90,.15);position:absolute;top:.8rem;right:1rem}
+.walk-step h4{font-family:'JetBrains Mono',monospace;font-size:.6rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-warm);margin-bottom:.8rem}
+.walk-step p{font-size:.85rem;color:var(--text-secondary);line-height:1.55}
+.walk-step .walk-result{margin-top:.8rem;padding-top:.8rem;border-top:1px solid var(--border);font-family:'JetBrains Mono',monospace;font-size:.58rem;color:var(--text-primary);font-weight:500;letter-spacing:.04em}
+.walk-arrow{display:flex;align-items:center;justify-content:center;width:28px;background:var(--bg-deep);color:var(--accent-warm);font-size:1rem;flex-shrink:0}
+
+/* ─── TIMELINE ─── */
+.timeline{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);margin:3rem 0}
+.tl-step{background:var(--bg-card);padding:2rem 1.5rem;transition:background .3s}
+.tl-step:hover{background:var(--bg-card-hover)}
+.tl-num{font-family:'JetBrains Mono',monospace;font-size:1.8rem;font-weight:600;color:var(--accent-warm);margin-bottom:.3rem}
+.tl-name{font-family:'JetBrains Mono',monospace;font-size:.6rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--text-primary);margin-bottom:.15rem}
+.tl-weeks{font-family:'JetBrains Mono',monospace;font-size:.55rem;color:var(--accent-warm);margin-bottom:1rem}
+.tl-desc{font-size:.82rem;color:var(--text-secondary);line-height:1.55}
+.tl-output{margin-top:1rem;padding-top:.8rem;border-top:1px solid var(--border);font-family:'JetBrains Mono',monospace;font-size:.55rem;font-weight:500;color:var(--text-tertiary);letter-spacing:.06em;text-transform:uppercase}
+
+.data-fw{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);margin:2.5rem 0}
+.data-phase{background:var(--bg-card);padding:2rem;text-align:center}
+.data-phase h4{font-family:'JetBrains Mono',monospace;font-size:.58rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--accent-warm);margin-bottom:.6rem}
+.data-phase .phase-name{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:600;color:var(--text-primary);margin-bottom:.6rem}
+.data-phase p{font-size:.82rem;color:var(--text-secondary);line-height:1.55}
+
+.use-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);margin:2.5rem 0}
+.use-card{background:var(--bg-card);padding:2rem;transition:background .3s}
+.use-card:hover{background:var(--bg-card-hover)}
+.use-card h4{font-family:'JetBrains Mono',monospace;font-size:.6rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-gold);margin-bottom:.8rem}
+.use-card p{font-size:.88rem;color:var(--text-secondary);line-height:1.6}
+.use-card .scenario{color:var(--text-primary);font-weight:500;font-style:italic;margin-bottom:.5rem;display:block}
+
+/* ─── TOOLTIPS ─── */
+.tip{position:relative;border-bottom:1px dotted var(--accent-warm);color:var(--text-primary);cursor:help;font-weight:500}
+.tip-box{display:none;position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:var(--bg-card);border:1px solid var(--accent-warm);padding:1rem 1.2rem;border-radius:4px;width:300px;z-index:100;font-size:.82rem;font-weight:400;color:var(--text-secondary);line-height:1.5;box-shadow:0 8px 24px rgba(0,0,0,.4)}
+.tip-box::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:6px solid transparent;border-top-color:var(--accent-warm)}
+.tip.active .tip-box{display:block}
+
+#ask{background:var(--bg-deep);text-align:center;padding:8rem 2.5rem 6rem}
+.commitments{max-width:580px;margin:3rem auto}
+.commit-row{display:flex;align-items:baseline;gap:1.2rem;text-align:left;padding:1.1rem 0;border-bottom:1px solid var(--border)}
+.commit-num{font-family:'JetBrains Mono',monospace;font-size:.75rem;font-weight:600;color:var(--accent-warm);flex-shrink:0}
+.commit-text{font-size:1.05rem;color:var(--text-secondary);line-height:1.55}
+.risk-block{max-width:580px;margin:3rem auto 0}
+.risk-badge{font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:600;letter-spacing:.1em;color:var(--accent-warm);margin-bottom:2.5rem}
+.outcomes{display:grid;grid-template-columns:1fr 1fr;gap:2rem;text-align:left}
+.outcome h4{font-family:'JetBrains Mono',monospace;font-size:.58rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;margin-bottom:.6rem}
+.outcome.pos h4{color:var(--accent-gold)}
+.outcome.neg h4{color:var(--text-tertiary)}
+.outcome p{font-size:.88rem;color:var(--text-secondary);line-height:1.55}
+.contact{margin-top:4rem;font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:500;color:var(--text-tertiary);letter-spacing:.1em}
+.divider{height:1px;background:var(--border);margin:0 auto;max-width:1060px}
+
+@media(max-width:768px){
+  section{padding:5rem 1.5rem}nav{padding:1rem 1.5rem}
+  .stats-grid,.split,.research,.evidence-grid,.mutual,.specs-layout,.outcomes,.use-grid{grid-template-columns:1fr}
+  .timeline{grid-template-columns:1fr 1fr}.data-fw{grid-template-columns:1fr}
+  .progression{flex-direction:column;gap:2px}.research-card.full{grid-column:auto}
+  .walkthrough{flex-direction:column}.walk-arrow{width:100%;height:28px}
+  .tip-box{left:0;transform:none;width:260px}
+}
+@media print{nav,#progress,.scroll-cue{display:none}section{min-height:auto;page-break-inside:avoid;padding:1.5rem}body{background:#fff;color:#111}}
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+<nav id="nav"><div class="logo">LUMINOS × NGL</div><a href="#ask" class="cta">The Proposal</a></nav>
+
+<!-- ═══════════════════ HERO ═══════════════════ -->
+<section id="hero">
+  <div class="container" style="text-align:center;position:relative;z-index:1">
+    <div class="eyebrow r">Pilot Partnership Proposal — 2026</div>
+    <h1 class="hero-title r d1"><span class="luminos-brand accent">LUMINOS</span> <span class="accent">×</span><br>National Geographic Learning</h1>
+    <p class="hero-sub r d2">A structured literacy partnership<br>for the Korean hagwon market.</p>
+    <div class="hero-rule r d3"></div>
+    <div class="hero-meta r d4">Taniora &nbsp;·&nbsp; tmotu06@gmail.com</div>
+  </div>
+  <div class="scroll-cue"><span>Scroll</span><div class="line"></div></div>
+</section>
+
+<!-- ═══════════════════ MARKET ═══════════════════ -->
+<section id="market">
+  <div class="container">
+    <div class="eyebrow r">The Opportunity</div>
+    <h2 class="section-title r d1">Korea's English education market is the largest of its kind. <span class="accent">But the entry point is owned by competitors.</span></h2>
+    <p class="lead r d2" style="margin-top:1.2rem">Korean families spend more on private English education than any country on earth. But at the foundational level — where students first encounter English — competitor phonics products capture the learner before Our World enters the picture.</p>
+    <div class="stats-grid r d3">
+      <div class="stat"><div class="stat-num">₩29.2T</div><div class="stat-label">Total private education spend (2024)</div><div class="stat-sub">4th consecutive record — +7.7% YoY</div></div>
+      <div class="stat"><div class="stat-num">₩8.7T</div><div class="stat-label">Estimated English-specific spend</div><div class="stat-sub">Largest single subject — +10.4% YoY</div></div>
+      <div class="stat"><div class="stat-num">87.7%</div><div class="stat-label">Elementary participation rate</div><div class="stat-sub">English is the top-spend subject</div></div>
+    </div>
+    <div class="insight-box r d4">
+      <p>In our experience and market observation, independent hagwons overwhelmingly use <strong>Smart Phonics</strong> (e-future) or <strong>Oxford Phonics World</strong> as the entry-level product. Both create ecosystem pull toward their own publisher series. Whoever owns the entry point influences the entire curriculum pathway. <strong>NGL has entry-level products like Our World ABC and Our World Starter — but these aren't designed as the kind of structured, semester-length phonics programme that Korean hagwons need to run as their foundational English course.</strong></p>
+    </div>
+    <div class="source-line r d5">Sources: Statistics Korea &amp; MOE, 사교육비조사 (March 2025). English figure derived from per-capita averages (KOSIS). Competitive landscape based on market research and direct observation across Korean hagwon settings.</div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════ PARADOX ═══════════════════ -->
+<section id="paradox">
+  <div class="container">
+    <div class="eyebrow r">The Paradox</div>
+    <h2 class="section-title r d1">The spend is world-leading.<br>The outcomes are not.</h2>
+    <p class="lead r d2" style="margin-top:1.2rem">Research shows that phonics instruction in Korean national curriculum textbooks is inconsistent, limited in scope, and varies significantly from textbook to textbook. English doesn't start until Grade 3, with just two hours per week. Yet families invest in private English education earlier and more heavily than almost anywhere else.</p>
+    <div class="split r d3">
+      <div class="split-col">
+        <div class="split-label">The Investment</div>
+        <div class="split-item"><strong>₩29.2T</strong> total private education (2024, record)</div>
+        <div class="split-item">Children begin English at average age <strong>3.7 years</strong></div>
+        <div class="split-item"><strong>92.7%</strong> in English education by age 5</div>
+        <div class="split-item">English kindergarten tuition: <strong>₩1.55M/month</strong></div>
+      </div>
+      <div class="split-col">
+        <div class="split-label">The Return</div>
+        <div class="split-item"><strong>EF English Proficiency Index</strong> (a global ranking of English ability across 123 countries): Korea ranked <strong>48th</strong> — down from 36th in 2022</div>
+        <div class="split-item"><strong>TOEFL</strong> (the most widely used English test for university admissions): Korean average <strong>86/120</strong> — matching the global average of 87</div>
+        <div class="split-item"><strong>TOEIC</strong> (the standard workplace English test): Korea scored <strong>678/990</strong> — 16th of 44 countries</div>
+        <div class="split-item">Weakest skill across all assessments: <strong>Speaking</strong></div>
+      </div>
+    </div>
+    <div class="pullquote r d4"><p>"One of the world's highest investments in English education — however, outcomes consistently converge at the global average."</p></div>
+    <div class="source-line r d5">EF EPI 2025; ETS TOEFL iBT Data Summary 2023; ETS TOEIC Worldwide Report 2024; Statistics Korea; Korea Institute of Child Care and Education. National curriculum phonics analysis: Choi &amp; Park (2020), Primary English Education, 26(3).</div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════ ROOT CAUSE ═══════════════════ -->
+<section id="cause">
+  <div class="container">
+    <div class="eyebrow r">The Root Cause</div>
+    <h2 class="section-title r d1">The gap is not effort.<br>It is how English is taught at the foundation.</h2>
+    <p class="lead r d2" style="margin-top:1.2rem">Peer-reviewed research identifies a specific challenge for Korean-speaking children learning to read in English. Standard EFL materials — whether international or Korean-made — don't fully address it.</p>
+    <div class="research r d3">
+      <div class="research-card">
+        <h4>Literacy skills do not carry over from Korean to English.</h4>
+        <p>Korean children develop strong phonological awareness — the ability to hear and manipulate sounds. But the ability to connect letters to sounds is specific to each writing system. English requires explicit, systematic instruction that Korean's transparent Hangul does not.</p>
+        <div class="cite">Wang, Park &amp; Lee (2006), Journal of Educational Psychology</div>
+      </div>
+      <div class="research-card">
+        <h4>Without systematic phonics, progress stalls.</h4>
+        <p>A controlled study found that EFL learners without explicit phonics instruction made "very limited progress (or even none at all) in phonological decoding, even over extended periods."</p>
+        <div class="cite">Li &amp; Woore (2021), System</div>
+      </div>
+      <div class="research-card full">
+        <h4>Even Korean-made phonics books leave outcomes dependent on teacher quality.</h4>
+        <p>Most Korean phonics series (Smart Phonics, Oxford Phonics World, and others) follow a standard 5-book structure: learn A–Z, then short vowels, then long vowels, then blends and digraphs. This structure works for publishers — but it relies heavily on individual teacher knowledge. Two teachers using the same book can produce completely different student outcomes, because the book provides content but doesn't control the instructional method. One teacher might know to explicitly address Korean-specific patterns like /r/ and /l/ confusion; another might not. <strong>LUMINOS is designed to be the instruction itself — the system delivers the methodology, and the teacher becomes the coach.</strong></p>
+        <div class="cite">Korean L1 interference: Choi (2016); de Jong, Hao &amp; Park (2009); Sheldon (1985)</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════ THE GAP ═══════════════════ -->
+<section id="gap">
+  <div class="container">
+    <div class="eyebrow r">The Structural Gap</div>
+    <h2 class="section-title r d1">The gap sits exactly where Our World begins.</h2>
+    <div class="progression r d2">
+      <div class="prog-step pre">Zero<br>Exposure</div>
+      <div class="prog-step gap">Alphabet<br>Awareness</div>
+      <div class="prog-step gap">Phonological<br>Readiness</div>
+      <div class="prog-step ngl">Our World<br>Starter<br>(Pre-A1)</div>
+      <div class="prog-step ngl">Our World<br>1 (A1)</div>
+      <div class="prog-step ngl-dark">Our World<br>2–6</div>
+    </div>
+    <div class="gap-badge r d3">← This is the gap — structural, not accidental →</div>
+    <div class="evidence-grid r d4">
+      <div class="evidence-card">
+        <h4>The Framework Gap</h4>
+        <p>Our World Starter maps to CEFR Pre-A1 — but Pre-A1 still assumes emergent literacy readiness: awareness of sound-symbol relationships, alphabet knowledge, basic vocabulary, and print conventions. <span class="em">Korean children entering English at ages 3–7 typically arrive without these foundations. They are pre-literate in English.</span></p>
+      </div>
+      <div class="evidence-card">
+        <h4>Observed in the Classroom</h4>
+        <p>At Explorers Academy (Incheon), new enrolments consistently arrived unable to access Our World Starter or Level 1 — not due to ability, but because they lacked the decoding skills these materials presuppose. <span style="color:var(--text-tertiary);font-style:italic">Single-site observation — consistent with peer-reviewed predictions.</span></p>
+      </div>
+    </div>
+    <div class="insight-box r d5" style="margin-top:2.5rem">
+      <p>While <strong>Our World Phonics with ABC</strong> provides foundational phonics support, the depth and structure needed for Korean EFL learners in hagwon settings — particularly the systematic phoneme sequencing, Korean L1 interference targeting, and semester-length programme design — goes beyond what a supplementary series is designed to deliver.</p>
+    </div>
+    <div class="source-line r d6">CEFR Companion Volume (2018/2020); Alexiou &amp; Stathopoulou (2021); NGL Cambridge English Qualifications Correlation (2020); Pearson GSE Young Learners (2022).</div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════ HOW IT WORKS IN PRACTICE ═══════════════════ -->
+<section id="walkthrough">
+  <div class="container">
+    <div class="eyebrow r">In Practice</div>
+    <h2 class="section-title r d1">How a hagwon day works<br>with LUMINOS + Our World.</h2>
+    <p class="lead r d2" style="margin-top:1.2rem">One continuous pathway. No gaps, no improvisation, no competitor materials needed.</p>
+
+    <div class="walkthrough r d3">
+      <div class="walk-step">
+        <div class="walk-num">1</div>
+        <h4>Student Enrols</h4>
+        <p>A new student arrives at the hagwon with zero or minimal English exposure. The teacher administers the DECODE diagnostic — a short, structured assessment that identifies exactly where the student sits on the literacy development spectrum.</p>
+        <div class="walk-result">→ Student placed at their precise starting point</div>
+      </div>
+      <div class="walk-arrow">▸</div>
+      <div class="walk-step">
+        <div class="walk-num">2</div>
+        <h4>LUMINOS Instruction</h4>
+        <p>The student begins LUMINOS lessons. The system delivers the methodology — phoneme sequencing, blending, decoding — built specifically for Korean learners. The teacher coaches and supports. Progress is tracked every session, automatically.</p>
+        <div class="walk-result">→ 12–20 weeks of structured phonics instruction</div>
+      </div>
+      <div class="walk-arrow">▸</div>
+      <div class="walk-step">
+        <div class="walk-num">3</div>
+        <h4>Readiness Check</h4>
+        <p>At programme completion, the student takes a readiness assessment mapped to Our World Starter and Level 1 entry expectations. Can they decode CVC words? Recognise target sight words and basic vocabulary? Blend the phonemes Our World assumes they know?</p>
+        <div class="walk-result">→ Ready for Our World? Measured, not guessed</div>
+      </div>
+      <div class="walk-arrow">▸</div>
+      <div class="walk-step">
+        <div class="walk-num">4</div>
+        <h4>Transition to Our World</h4>
+        <p>The student moves into Our World Starter or Level 1 — with the foundational skills to actually access the material. The hagwon has one continuous pathway from zero to fluency, all within the NGL ecosystem.</p>
+        <div class="walk-result">→ No competitor materials needed. No gaps.</div>
+      </div>
+    </div>
+
+    <div class="insight-box r d4">
+      <p><strong>For parents:</strong> LUMINOS generates session-level progress data — giving hagwon owners structured evidence of their child's development to share with parents. Instead of "your child is doing well," the hagwon can show exactly which skills have been acquired and what comes next. This is a competitive advantage most independent hagwons don't currently have.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════ PARTNERSHIP VALUE ═══════════════════ -->
+<section id="value">
+  <div class="container">
+    <div class="eyebrow r">The Partnership</div>
+    <h2 class="section-title r d1">What this creates.<br><span class="accent">For both of us.</span></h2>
+    <p class="lead r d2" style="margin-top:1.2rem">This is not a product pitch. It is a joint research partnership where NGL co-authors the success criteria and LUMINOS builds the evidence. Both sides invest. Both sides benefit.</p>
+
+    <div class="value-stack r d3">
+      <div class="value-row">
+        <div class="value-icon">📊</div>
+        <div>
+          <h4>Evidence that LUMINOS successfully bridges learners into Our World — measured against NGL's own criteria</h4>
+          <p>NGL defines what "ready for Our World Starter" and "ready for Our World Level 1" means — including decoding skills, sight word recognition, basic vocabulary, and phoneme blending thresholds. LUMINOS measures students against those criteria. The evidence is built to NGL's standard — not ours.</p>
+          <div class="value-tag">→ NGL gets evidence authored to their own specifications, usable in distributor and institutional sales</div>
+        </div>
+      </div>
+      <div class="value-row">
+        <div class="value-icon">🛡️</div>
+        <div>
+          <h4>A structured entry bridge designed to protect series adoption</h4>
+          <p>In our experience and market observation, hagwons encountering this gap commonly bridge it with Smart Phonics or Oxford Phonics World — both creating ecosystem pull away from NGL. LUMINOS is designed to be the entry-level bridge that feeds directly into Our World, keeping learners inside the NGL ecosystem from their very first English lesson.</p>
+          <div class="value-tag">→ Stops competitor phonics products from capturing learners before Our World can reach them</div>
+        </div>
+      </div>
+      <div class="value-row">
+        <div class="value-icon">🔍</div>
+        <div>
+          <h4>A young learner placement engine that extends NGL's diagnostic reach</h4>
+          <p>NGL's current placement tools target learners aged 14 and up. LUMINOS includes a CEFR-based adaptive placement engine built specifically for young learners — capable of diagnosing pre-literate to Pre-A1 students and recommending appropriate entry points within the Cengage and NGL ecosystem, including specific Our World levels.</p>
+          <div class="value-tag">→ Fills a diagnostic gap NGL's current tools don't cover — and connects directly to NGL's product catalogue</div>
+        </div>
+      </div>
+      <div class="value-row">
+        <div class="value-icon">🔄</div>
+        <div>
+          <h4>A turnkey system that helps independent hagwons compete with franchise chains</h4>
+          <p>Franchise chains like Chungdahm and Avalon build proprietary systems — tracking students, structuring curricula, providing progress reports. Independent hagwons — a key customer segment for NGL — have no equivalent. LUMINOS creates the operational layer that maps students to NGL content across multiple titles, giving independent hagwons a complete, ready-to-implement programme. New academies can take this system and hit the ground running.</p>
+          <div class="value-tag">→ Post-pilot: a turnkey methodology using NGL content + LUMINOS system, potentially distributed through NGL's Spark platform</div>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="sub-title r d4">The value is mutual.</h3>
+    <div class="mutual r d5">
+      <div class="mutual-col">
+        <div class="split-label" style="color:var(--accent-gold)">What NGL Gets</div>
+        <div class="mutual-item">Evidence that LUMINOS bridges learners into Our World, built to NGL's own readiness criteria</div>
+        <div class="mutual-item">A structured entry bridge designed to protect series adoption against competitor phonics ecosystems</div>
+        <div class="mutual-item">A young learner placement engine extending NGL's diagnostic capability below age 14, with direct book recommendations</div>
+        <div class="mutual-item">LUMINOS acquisition data from Korean hagwon learners showing how students progress through foundational literacy</div>
+        <div class="mutual-item">Post-pilot pathway to a turnkey hagwon programme and potential Spark platform integration</div>
+      </div>
+      <div class="mutual-col">
+        <div class="split-label" style="color:var(--accent-warm)">What LUMINOS Gets</div>
+        <div class="mutual-item">Co-validation with a globally recognised education brand</div>
+        <div class="mutual-item">NGL-defined readiness criteria to align the LUMINOS curriculum against</div>
+        <div class="mutual-item">Pathway to NGL's Korean distribution network and institutional channels</div>
+        <div class="mutual-item">Market credibility that accelerates independent hagwon adoption</div>
+        <div class="mutual-item">Potential distribution and integration through NGL's Spark digital platform</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════ PLATFORM ═══════════════════ -->
+<section id="platform">
+  <div class="container">
+    <div class="eyebrow r">The Platform</div>
+    <h2 class="section-title r d1">Built to close this specific gap.</h2>
+    <p class="lead r d2" style="margin-top:1.2rem">LUMINOS is a phonics-first English literacy platform designed specifically for Korean EFL learners in hagwon settings. Built from the ground up for this learner population — not adapted from a global product. The system delivers the instructional methodology directly, so outcomes don't depend on individual teacher expertise.</p>
+    <div class="specs-layout r d3">
+      <div class="spec-main">
+        <div class="spec-item"><strong>71 lessons</strong> — zero exposure through Pre-A1 convergence</div>
+        <div class="spec-item" style="margin-top:.9rem"><strong>10-block lesson architecture</strong> — designed for 50-minute hagwon sessions</div>
+        <div class="spec-item" style="margin-top:.9rem"><strong>Phoneme sequence</strong> built against documented Korean L1 interference patterns</div>
+        <div class="spec-item" style="margin-top:.9rem"><strong>CEFR-based placement engine for young learners</strong> — diagnostic assessment that places students precisely before instruction begins, and recommends entry points within the NGL ecosystem</div>
+        <div class="spec-item" style="margin-top:.9rem"><strong>DECODE diagnostic</strong> — structured literacy assessment mapping to Ehri's phases of word reading development (a widely used model of how children learn to read)</div>
+        <div class="spec-item" style="margin-top:.9rem"><strong>14 peer-reviewed publications</strong> underpinning the methodology</div>
+        <div class="spec-item" style="margin-top:.9rem"><strong>Live platform</strong> — deployed, with DECODE diagnostics administered</div>
+      </div>
+      <div class="spec-side">
+        <div class="spec-card warm">
+          <h4>Prior Evidence</h4>
+          <p class="spec-item"><strong>80% reading accuracy</strong> and <strong>70% spelling accuracy</strong> from a prototype tested in New Zealand.</p>
+          <p class="spec-item" style="font-style:italic;color:var(--text-tertiary);font-size:.82rem">Different learner population — proof of concept, not Korean-specific efficacy. The Korean pilot is designed to produce that evidence.</p>
+        </div>
+        <div class="spec-card">
+          <h4>Current Status</h4>
+          <div class="spec-item"><strong>DECODE diagnostics:</strong> Administered to ~20 students</div>
+          <div class="spec-item"><strong>Site:</strong> CedarHill English Academy, Seoul</div>
+          <div class="spec-item"><strong>Baseline data:</strong> Collected</div>
+          <div class="spec-item"><strong>LUMINOS instruction phase:</strong> Pending</div>
+          <p style="margin-top:.8rem;font-style:italic;color:var(--text-tertiary);font-size:.82rem">Baseline diagnostic data exists. The instruction phase and outcome measurement is what the co-validated pilot produces.</p>
+        </div>
+      </div>
+    </div>
+    <div class="insight-box r d4">
+      <p>Developed by Taniora — 6 years of English hagwon teaching experience in Korea including academy ownership (Explorers Academy, Incheon), where the Our World entry gap was first identified through direct classroom observation.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════ THE PILOT ═══════════════════ -->
+<section id="pilot">
+  <div class="container">
+    <div class="eyebrow r">The Pilot</div>
+    <h2 class="section-title r d1">A joint research project.<br><span class="accent">NGL sets the standard. LUMINOS proves it.</span></h2>
+    <p class="lead r d2" style="margin-top:1.2rem">This is a partnership — not a handoff. NGL helps define what "ready for Our World" actually means: what decoding skills, what vocabulary, what phoneme knowledge a student needs. LUMINOS then measures whether students reach that bar. NGL owns the question. The data answers it.</p>
+
+    <div class="timeline r d3">
+      <div class="tl-step">
+        <div class="tl-num">01</div><div class="tl-name">Co-Design</div><div class="tl-weeks">Weeks 1–3</div>
+        <div class="tl-desc">NGL defines <span class="tip" onclick="this.classList.toggle('active')">readiness criteria<span class="tip-box">The specific skills a student needs before they can successfully learn from Our World Starter or Level 1 — for example: can they decode three-letter words? Do they recognise key sight words and basic vocabulary? Can they blend specific phoneme combinations? NGL sets this bar.</span></span> for Our World Starter and Level 1. Both parties agree on success metrics, <span class="tip" onclick="this.classList.toggle('active')">pilot scope<span class="tip-box">The agreed boundaries of the pilot: how many students, which hagwon sites, how long, what gets measured, what the final report looks like. Think of it as the project brief both sides sign off on.</span></span>, and evidence package format.</div>
+        <div class="tl-output">Output → Signed scope agreement + NGL-authored readiness criteria</div>
+      </div>
+      <div class="tl-step">
+        <div class="tl-num">02</div><div class="tl-name">Build</div><div class="tl-weeks">Weeks 3–6</div>
+        <div class="tl-desc">LUMINOS builds the <span class="tip" onclick="this.classList.toggle('active')">integration layer<span class="tip-box">The connection between LUMINOS and Our World content — ensuring that what LUMINOS teaches maps directly to what Our World Starter and Level 1 expect students to already know.</span></span> and <span class="tip" onclick="this.classList.toggle('active')">readiness assessment<span class="tip-box">A short test given at the end of the LUMINOS programme that checks whether each student has reached NGL's readiness criteria — essentially asking: "Can this student now access Our World?"</span></span> mapped to NGL's criteria. No NGL development resources required.</div>
+        <div class="tl-output">Output → Bridge curriculum + readiness assessment + teacher onboarding</div>
+      </div>
+      <div class="tl-step">
+        <div class="tl-num">03</div><div class="tl-name">Run</div><div class="tl-weeks">Weeks 6–18</div>
+        <div class="tl-desc">20–50 students across 1–2 hagwon sites. LUMINOS captures <span class="tip" onclick="this.classList.toggle('active')">session-by-session performance data<span class="tip-box">Every lesson, the LUMINOS platform records how each student performed on each task — blending accuracy, phoneme identification, error patterns. This builds a detailed picture of how each student is progressing over time.</span></span>. Baseline, ongoing, and exit assessments administered.</div>
+        <div class="tl-output">Output → Structured LUMINOS performance dataset</div>
+      </div>
+      <div class="tl-step">
+        <div class="tl-num">04</div><div class="tl-name">Review</div><div class="tl-weeks">Weeks 18–20</div>
+        <div class="tl-desc">Joint data review. Did students meet NGL's readiness criteria? LUMINOS presents complete evidence package showing the journey from baseline to Our World readiness.</div>
+        <div class="tl-output">Output → Evidence report measured against NGL's own standard</div>
+      </div>
+    </div>
+
+    <h3 class="sub-title r d4">What the evidence package contains.</h3>
+    <div class="data-fw r d5">
+      <div class="data-phase">
+        <h4>Day 1</h4>
+        <div class="phase-name">Baseline</div>
+        <p>DECODE diagnostic places each student — phoneme inventory, letter recognition, CVC decoding, basic vocabulary. Documents exactly where each learner starts.</p>
+      </div>
+      <div class="data-phase">
+        <h4>Weeks 1–12</h4>
+        <div class="phase-name">LUMINOS Acquisition Data</div>
+        <p>Session-by-session LUMINOS performance — blending accuracy, phoneme identification, Korean L1 error patterns tracked and quantified as students progress through the programme.</p>
+      </div>
+      <div class="data-phase">
+        <h4>Week 12+</h4>
+        <div class="phase-name">Readiness Verdict</div>
+        <p>Post-programme assessment mapped against NGL's own readiness criteria for Our World Starter and Level 1. The question: can this student now access Our World?</p>
+      </div>
+    </div>
+
+    <h3 class="sub-title r d6">How NGL uses this evidence.</h3>
+    <div class="use-grid r d7">
+      <div class="use-card">
+        <h4>In Distributor Meetings</h4>
+        <span class="scenario">"We have classroom evidence that students can be systematically bridged into Our World from zero exposure."</span>
+        <p>LUMINOS data showing students progressing from pre-literate to Our World-ready — measured acquisition evidence tied to specific milestones, not survey results or satisfaction scores.</p>
+      </div>
+      <div class="use-card">
+        <h4>In Institutional Sales</h4>
+        <span class="scenario">"We don't just sell books. We offer a complete pathway from zero to fluency."</span>
+        <p>Evidence that NGL's ecosystem now starts before Pre-A1, with a structured bridge that no other publisher currently offers for the Korean market. A differentiated value proposition.</p>
+      </div>
+      <div class="use-card">
+        <h4>For Hagwon Adoption</h4>
+        <span class="scenario">"Here is a complete, turnkey English programme your academy can implement immediately."</span>
+        <p>A closed-loop system — placement, instruction, progress tracking, parent reporting, and curriculum — that gives independent hagwons the kind of structured programme franchise chains build in-house. New academies take the system and hit the ground running.</p>
+      </div>
+      <div class="use-card">
+        <h4>For Product Development</h4>
+        <span class="scenario">"Here is exactly what Korean learners need before Our World Starter."</span>
+        <p>Granular data on Korean-specific error patterns, acquisition sequences, and phonological milestones — intelligence NGL can use to refine existing products or develop new ones for this market.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════ THE ASK ═══════════════════ -->
+<section id="ask">
+  <div class="container">
+    <h2 class="section-title r">One decision.<br><span class="accent">Three commitments.</span></h2>
+    <div class="commitments">
+      <div class="commit-row r d1"><span class="commit-num">01</span><span class="commit-text">Agree to a 20-week co-validated pilot using Our World as the curriculum anchor.</span></div>
+      <div class="commit-row r d2"><span class="commit-num">02</span><span class="commit-text">Assign one internal contact to co-author readiness criteria and scope agreement.</span></div>
+      <div class="commit-row r d3"><span class="commit-num">03</span><span class="commit-text">Issue a Letter of Intent documenting the agreed pilot scope.</span></div>
+    </div>
+    <div class="risk-block">
+      <div class="risk-badge r d4">No budget · No IP transfer · No commercial commitment before evidence exists</div>
+      <div class="outcomes r d5">
+        <div class="outcome pos">
+          <h4>If the evidence is positive</h4>
+          <p>NGL has classroom-level evidence — built to their own readiness standard — that students can be systematically bridged into Our World at the foundational literacy level in Korean hagwons. Produced at zero cost. Both parties discuss terms for a structured go-to-market partnership, including potential integration through NGL's Spark platform and Korean distribution channels.</p>
+        </div>
+        <div class="outcome neg">
+          <h4>If the evidence is inconclusive</h4>
+          <p>NGL has lost nothing. And both sides still have the data to understand why — and what would need to change.</p>
+        </div>
+      </div>
+    </div>
+    <div class="contact r d6">Taniora &nbsp;·&nbsp; tmotu06@gmail.com</div>
+  </div>
+</section>
+
+<div style="height:3rem"></div>
+
+<script>
+const pBar=document.getElementById('progress'),navEl=document.getElementById('nav');
+function onScroll(){const s=window.scrollY,h=document.documentElement.scrollHeight-window.innerHeight;pBar.style.width=((s/h)*100)+'%';navEl.classList.toggle('scrolled',s>60)}
+const io=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('v')})},{threshold:0.12,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.r').forEach(el=>io.observe(el));
+window.addEventListener('scroll',onScroll,{passive:true});onScroll();
+// Close tooltips when clicking outside
+document.addEventListener('click',function(e){if(!e.target.closest('.tip')){document.querySelectorAll('.tip.active').forEach(t=>t.classList.remove('active'))}});
+</script>
+</body>
+</html>
